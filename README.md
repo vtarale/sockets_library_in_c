@@ -30,6 +30,37 @@ int main(void){
     }
 }
 ```
+## Client side code
+```c
+#include <sys/types.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <sys/socket.h>
+#include <stdint.h>
+#include <unistd.h>
+#include "sockets_library_in_c/sockets.h" // if client is not in the repo folder
+#include <string.h>
+#include <stdio.h>
+
+int main(void){
+    CLIENT client;
+    char string[BUFFSIZE];
+
+    __client_init__(&client);
+    client.create(&client, AF_INET, SOCK_STREAM, 0);
+    client.connect(&client, AF_INET, 8080, "127.0.0.1");
+
+    while(1){
+        printf("Message: ");
+        scanf("%s", string);
+        client.s(&client, client.fd, string, BUFFSIZE, 0);
+        if(strcmp(string, "Disconnect") == 0){
+            break;
+        }
+    }
+}
+```
+
 ## LICENSE
   
 [apache 2.0](https://www.apache.org/licenses/LICENSE-2.0)
